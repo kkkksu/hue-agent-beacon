@@ -1,5 +1,6 @@
 #!/usr/bin/env bun
 
+import { parseArgs } from "./cli-args";
 import { ack } from "./commands/ack";
 import { notifyComplete } from "./notifications/complete";
 import { notifyError } from "./notifications/error";
@@ -15,25 +16,25 @@ const notifyHandlers: Record<string, () => Promise<void>> = {
 
 function printUsage(): void {
   const notifyCommands = Object.keys(notifyHandlers).map(
-    (event) => `  hue-agent-beacon notify ${event}`,
+    (event) => `  hue-agent-beacon notify ${event} [--source source]`,
   );
 
   console.error(["Usage:", ...notifyCommands, "  hue-agent-beacon ack"].join("\n"));
 }
 
 async function main(): Promise<void> {
-  const [command, event] = Bun.argv.slice(2);
+  const parsed = parseArgs(Bun.argv.slice(2));
 
-  if (command === "notify" && event) {
-    const notify = notifyHandlers[event];
+  if (parsed.kind === "notify") {
+    const handler = notifyHandlers[parsed.event];
 
-    if (notify) {
-      await notify();
+    if (handler) {
+      await handler();
       return;
     }
   }
 
-  if (command === "ack") {
+  if (parsed.kind === "ack") {
     await ack();
     return;
   }
