@@ -1,0 +1,17 @@
+{
+  "name": "hue-agent-beacon",
+  "version": "0.0.1",
+  "type": "module",
+  "bin": {
+    "hue-agent-beacon": "./src/cli.ts"
+  },
+  "scripts": {
+    "start": "bun run src/cli.ts",
+    "notify:complete": "bun run src/cli.ts notify complete",
+    "notify:waiting": "bun run src/cli.ts notify waiting_for_user",
+    "ack": "bun run src/cli.ts ack"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}
