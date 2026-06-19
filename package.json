@@ -9,6 +9,7 @@
     "start": "bun run src/cli.ts",
     "test": "bun test",
     "notify:complete": "bun run src/cli.ts notify complete",
+    "notify:error": "bun run src/cli.ts notify error",
     "notify:waiting": "bun run src/cli.ts notify waiting_for_user",
     "notify:resumed": "bun run src/cli.ts notify resumed",
     "ack": "bun run src/cli.ts ack"

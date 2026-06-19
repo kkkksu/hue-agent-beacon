@@ -2,21 +2,23 @@
 
 import { ack } from "./commands/ack";
 import { notifyComplete } from "./notifications/complete";
+import { notifyError } from "./notifications/error";
 import { notifyResumed } from "./notifications/resumed";
 import { notifyWaitingForUser } from "./notifications/waiting-for-user";
 
 const notifyHandlers: Record<string, () => Promise<void>> = {
   complete: notifyComplete,
+  error: notifyError,
   waiting_for_user: notifyWaitingForUser,
   resumed: notifyResumed,
 };
 
 function printUsage(): void {
-  console.error(`Usage:
-  hue-agent-beacon notify complete
-  hue-agent-beacon notify waiting_for_user
-  hue-agent-beacon notify resumed
-  hue-agent-beacon ack`);
+  const notifyCommands = Object.keys(notifyHandlers).map(
+    (event) => `  hue-agent-beacon notify ${event}`,
+  );
+
+  console.error(["Usage:", ...notifyCommands, "  hue-agent-beacon ack"].join("\n"));
 }
 
 async function main(): Promise<void> {
